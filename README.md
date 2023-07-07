@@ -23,6 +23,5 @@ You can skip the .env file altogether and supply everything via command-line arg
 
 Note: Due to privacy settings in profiles from some providers like github, email might not always be available. So do not always depend on SSO being able to capture user's email. This step is particularly sensitive when SSO is used when registering new users where email is often used as a unique identifier.
 
-###Key Takeaway:
-`singlesign.go` demonstrates the elegance of `golang.org/x/oauth2` library. The implementation that you see there will work for ALL in the list here `https://pkg.go.dev/golang.org/x/oauth2/endpoints`. The concrete implementations are near identical copies of `providers/googleAuth.go` with only changes being `oauth2.Config` object's field values, `SSOProviderType` and `resourceURL` along with `scope` values in `cmd/main.go`. 
+**Key Takeaway:**`singlesign.go` demonstrates the elegance of `golang.org/x/oauth2` library. The implementation that you see there will work for ALL in the list here `https://pkg.go.dev/golang.org/x/oauth2/endpoints`. The concrete implementations are near identical copies of `providers/googleAuth.go` with only changes being `oauth2.Config` object's field values, `SSOProviderType` and `resourceURL` along with `scope` values in `cmd/main.go`. 
 Different providers name scopes differently, like for google, its `profile` and `email` for read-only access while for github, its `user:email` and `read:user`.
