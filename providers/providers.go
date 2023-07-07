@@ -15,7 +15,7 @@ type SSOProviderType string
 type SSOProvider interface {
 	GetConsentURL(state string) string
 	Exchange(ctx context.Context, code string) (*oauth2.Token, error)
-	GetSSOUserInfo(ctx context.Context, resourceURL string, token *oauth2.Token) (ssolib.SSOUserInfo, error)
+	GetSSOUserInfo(ctx context.Context, token *oauth2.Token) (ssolib.SSOUserInfo, error)
 	GetSSOProvider() SSOProviderType
 }
 
@@ -23,6 +23,12 @@ type Providers interface {
 	AddProvider(key SSOProviderType, value SSOProvider)
 	GetProvider(key SSOProviderType) (SSOProvider, error)
 	RemoveProvider(key SSOProviderType)
+}
+
+type providerBase struct {
+	config      *oauth2.Config
+	ssoProvider ssolib.SingleSignOn
+	resourceURL string
 }
 
 type providers struct {

@@ -11,15 +11,15 @@ import (
 const GithubAuth = SSOProviderType("github")
 
 type GithubAuthProvider struct {
-	config      *oauth2.Config
-	ssoProvider ssolib.SingleSignOn
+	providerBase
 }
 
 func NewGithubProvider(prov Providers, clientId, clientSecret, redirectURL string, scopes []string) {
-	gap := &GithubAuthProvider{
-		config:      getConfig(redirectURL, clientId, clientSecret, github.Endpoint, scopes),
-		ssoProvider: ssolib.NewSingleSignOn(),
-	}
+	gap := &GithubAuthProvider{}
+	gap.config = getConfig(redirectURL, clientId, clientSecret, github.Endpoint, scopes)
+	gap.resourceURL = "https://api.github.com/user"
+	gap.ssoProvider = ssolib.NewSingleSignOn()
+
 	prov.AddProvider(GithubAuth, gap)
 }
 
@@ -34,8 +34,8 @@ func (gap *GithubAuthProvider) Exchange(ctx context.Context, code string) (*oaut
 }
 
 // GetSSOUserInfo ...
-func (gap *GithubAuthProvider) GetSSOUserInfo(ctx context.Context, resourceURL string, token *oauth2.Token) (ssolib.SSOUserInfo, error) {
-	return gap.ssoProvider.GetSSOUserInfo(ctx, gap.config, resourceURL, token)
+func (gap *GithubAuthProvider) GetSSOUserInfo(ctx context.Context, token *oauth2.Token) (ssolib.SSOUserInfo, error) {
+	return gap.ssoProvider.GetSSOUserInfo(ctx, gap.config, gap.resourceURL, token)
 }
 
 // GetSSOProvider ...

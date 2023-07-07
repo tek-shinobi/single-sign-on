@@ -11,15 +11,14 @@ import (
 const GoogleAuth = SSOProviderType("google")
 
 type GoogleAuthProvider struct {
-	config      *oauth2.Config
-	ssoProvider ssolib.SingleSignOn
+	providerBase
 }
 
 func NewGoogleProvider(prov Providers, clientId, clientSecret, redirectURL string, scopes []string) {
-	gap := &GoogleAuthProvider{
-		config:      getConfig(redirectURL, clientId, clientSecret, google.Endpoint, scopes),
-		ssoProvider: ssolib.NewSingleSignOn(),
-	}
+	gap := &GoogleAuthProvider{}
+	gap.config = getConfig(redirectURL, clientId, clientSecret, google.Endpoint, scopes)
+	gap.ssoProvider = ssolib.NewSingleSignOn()
+	gap.resourceURL = "https://www.googleapis.com/oauth2/v3/userinfo"
 	prov.AddProvider(GoogleAuth, gap)
 }
 
@@ -33,9 +32,14 @@ func (gap *GoogleAuthProvider) Exchange(ctx context.Context, code string) (*oaut
 	return gap.ssoProvider.Exchange(ctx, gap.config, code)
 }
 
-// GetSSOUserInfo ...
-func (gap *GoogleAuthProvider) GetSSOUserInfo(ctx context.Context, resourceURL string, token *oauth2.Token) (ssolib.SSOUserInfo, error) {
+// GetSSOInfoFromResourceURL ...
+func (gap *GoogleAuthProvider) GetSSOInfoFromResourceURL(ctx context.Context, resourceURL string, token *oauth2.Token) (ssolib.SSOUserInfo, error) {
 	return gap.ssoProvider.GetSSOUserInfo(ctx, gap.config, resourceURL, token)
+}
+
+// GetSSOUserInfo ...
+func (gap *GoogleAuthProvider) GetSSOUserInfo(ctx context.Context, token *oauth2.Token) (ssolib.SSOUserInfo, error) {
+	return gap.ssoProvider.GetSSOUserInfo(ctx, gap.config, gap.resourceURL, token)
 }
 
 // GetSSOProvider ...

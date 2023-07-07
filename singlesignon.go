@@ -79,6 +79,7 @@ func (*singleSignOn) Exchange(ctx context.Context, cfg *oauth2.Config, code stri
 // returns ssouserinfo from the given resourceUrl
 func (*singleSignOn) GetSSOUserInfo(ctx context.Context, cfg *oauth2.Config, resourceURL string, token *oauth2.Token) (SSOUserInfo, error) {
 	client := cfg.Client(ctx, token)
+
 	resp, err := client.Get(resourceURL)
 	if err != nil {
 		return nil, errors.Join(ErrFetchingTokenFromURL, err)
