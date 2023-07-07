@@ -27,15 +27,12 @@ func main() {
 	googleScopes := []string{
 		"email",
 		"profile",
-		// "https://www.googleapis.com/auth/userinfo.email",
-		// "https://www.googleapis.com/auth/userinfo.profile",
 	}
 	githubScopes := []string{
 		"user:email",
 		"read:user",
-		// "https://api.github.com/user",
 	}
-	// providers.NewGithubProvider(prov)
+
 	prov := providers.NewProvider()
 
 	providers.NewGoogleProvider(prov, googleClientID, googleClientSecret, redirectURL, googleScopes)
