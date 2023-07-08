@@ -23,7 +23,7 @@ You can skip the .env file altogether and supply everything via command-line arg
 
 Note: Due to privacy settings in profiles from some providers like github, email might not always be available. So do not always depend on SSO being able to capture user's email. This step is particularly sensitive when SSO is used when registering new users where email is often used as a unique identifier.
 
-**How to use:** In the browser -> `http://localhost:3300/signin?ssoclient=google` to start the auth flow using google as SSO provider. `http://localhost:3300/signin?ssoclient=github` to start the auth flow using github as auth provider.
+**How to use:** In the browser -> `http://localhost:3300/signin?ssoclient=google` to start the auth flow using google as SSO provider. `http://localhost:3300/signin?ssoclient=github` to start the auth flow using github as SSO provider.
 
  🔥**Key Takeaway:** 🔥`singlesign.go` demonstrates the elegance of `golang.org/x/oauth2` library. The implementation that you see there will work for ALL in the list here `https://pkg.go.dev/golang.org/x/oauth2/endpoints`. The concrete implementations are near identical copies of `providers/googleAuth.go` with only changes being:
  1)  `in concrete implementation like providers/googleAuth.go`
